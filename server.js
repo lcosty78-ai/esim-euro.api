@@ -2,9 +2,13 @@ const express = require("express");
 const path = require("path");
 const Stripe = require("stripe");
 const nodemailer = require("nodemailer");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors({
+  origin: "*"
+}));
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
 const SITE_URL = (process.env.SITE_URL || "https://esim-euro.com").replace(/\/$/, "");
