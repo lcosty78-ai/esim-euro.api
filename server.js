@@ -125,7 +125,9 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-res.sendFile(path.join(__dirname, 'public/index.html'));
+app.get('/', (req, res) => {
+  res.send('API eSIM merge 🚀');
+});
 
 app.get("/health", (req, res) => res.status(200).json({ ok: true }));
 
