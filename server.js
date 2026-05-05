@@ -42,7 +42,7 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
       const phone = process.env.CALLMEBOT_PHONE;
       const apiKey = process.env.CALLMEBOT_API_KEY;
 
-      const message = Salut! Plata a fost confirmata ✅
+      const message = "Salut! Plata a fost confirmata ✅"
 Plan: ${plan} zile (${days})
 Email: ${email};
 
