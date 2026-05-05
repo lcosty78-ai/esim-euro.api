@@ -35,16 +35,28 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
       const email = session.customer_email || session.metadata?.customer_email;
       const plan = session.metadata?.plan;
       const days = session.metadata?.days;
+      const price = session.metadata?.price;
+      const name = session.metadata?.name;
+      const phoneClient = session.metadata?.phone;
 
-      console.log("PLATA FINALIZATA:", email, plan, days);
+      const orderId = session.id.slice(-6); // ID scurt
+      const date = new Date().toLocaleString("ro-RO");
+
+console.log("PLATA FINALIZATA:", email, plan, days);
 
       // 🔥 TRIMITERE WHATSAPP
       const phone = process.env.CALLMEBOT_PHONE;
       const apiKey = process.env.CALLMEBOT_API_KEY;
 
-      const message = `Salut! Plata a fost confirmata ✅
-Plan: ${plan} zile (${days})
-Email: ${email};`
+      const message = 🔥 Comandă nouă nr.${orderId}
+
+👤 Nume: ${name || "-"}
+📧 Email: ${email}
+📞 Telefon: ${phoneClient || "-"}
+🌍 Plan: ${plan} (${days} zile)
+💰 Preț: ${price || "-"} €
+🆔 ID: #${orderId}
+📅 Data: ${date};
 
       const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
 
