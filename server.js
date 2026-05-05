@@ -24,8 +24,41 @@ const PLANS = {
 };
 
 app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
-  console.log("checkout.session.completed");
-  res.json({ received: true });
+  try {
+    const event = JSON.parse(req.body.toString());
+
+    console.log("Event primit:", event.type);
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      const email = session.customer_email || session.metadata?.customer_email;
+      const plan = session.metadata?.plan;
+      const days = session.metadata?.days;
+
+      console.log("PLATA FINALIZATA:", email, plan, days);
+
+      // 🔥 TRIMITERE WHATSAPP
+      const phone = process.env.CALLMEBOT_PHONE;
+      const apiKey = process.env.CALLMEBOT_API_KEY;
+
+      const message = Salut! Plata a fost confirmata ✅
+Plan: ${plan} zile (${days})
+Email: ${email};
+
+      const url = https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message)}&apikey=${apiKey};
+
+      await fetch(url);
+
+      console.log("Mesaj WhatsApp trimis");
+    }
+
+    res.json({ received: true });
+
+  } catch (err) {
+    console.error("Webhook error:", err);
+    res.status(400).send("Webhook error");
+  }
 });
 
 app.use(express.json());
