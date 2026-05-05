@@ -46,7 +46,7 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
 Plan: ${plan} zile (${days})
 Email: ${email};`
 
-      const url = https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message)}&apikey=${apiKey};
+      const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
 
       await fetch(url);
 
