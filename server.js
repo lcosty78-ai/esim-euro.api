@@ -27,6 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  console.log("Stripe webhook primit");
+  res.json({ received: true });
+});
+
+
 app.get("/health", (req, res) => res.status(200).send("OK"));
 
 app.post("/create-checkout-session", async (req, res) => {
