@@ -48,7 +48,7 @@ console.log("PLATA FINALIZATA:", email, plan, days);
       const phone = process.env.CALLMEBOT_PHONE;
       const apiKey = process.env.CALLMEBOT_API_KEY;
 
-      const message = 🔥 Comandă nouă nr.${orderId}
+      const message = `🔥 Comandă nouă nr.${orderId}
 
 👤 Nume: ${name || "-"}
 📧 Email: ${email}
@@ -56,7 +56,7 @@ console.log("PLATA FINALIZATA:", email, plan, days);
 🌍 Plan: ${plan} (${days} zile)
 💰 Preț: ${price || "-"} €
 🆔 ID: #${orderId}
-📅 Data: ${date};
+📅 Data: ${date}`;
 
       const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
 
