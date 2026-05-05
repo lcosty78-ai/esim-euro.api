@@ -35,7 +35,7 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
       const email = session.customer_email || session.metadata?.customer_email;
       const plan = session.metadata?.plan;
       const days = session.metadata?.days;
-      const price = session.metadata?.price;
+      const price = (session.amount_total / 100).toFixed(2);
       const name = session.metadata?.name;
       const phoneClient = session.metadata?.phone;
 
@@ -87,6 +87,7 @@ app.post("/create-checkout-session", async (req, res) => {
     const customerEmail = String(req.body.email || "").trim().toLowerCase();
     const plan = PLANS[planKey];
 
+    
     if (!plan) return res.status(400).json({ error: "Plan invalid." });
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -97,6 +98,12 @@ app.post("/create-checkout-session", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: customerEmail,
+      metadata: {
+        name: req.body.name,
+        phone: req.body.phone,
+        plan: planKey,
+        days: plan.days
+},
       customer_creation: "always",
       payment_method_types: ["card"],
       line_items: [{
