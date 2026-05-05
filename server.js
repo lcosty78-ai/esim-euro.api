@@ -24,7 +24,7 @@ const PLANS = {
 };
 
 app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
-  console.log("Stripe webhook primit");
+  console.log("checkout.session.completed");
   res.json({ received: true });
 });
 
