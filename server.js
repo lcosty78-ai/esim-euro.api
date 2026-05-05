@@ -48,9 +48,11 @@ Email: ${email};`
 
       const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
 
-      await fetch(url);
+      const callmebotRes = await fetch(url);
+const callmebotText = await callmebotRes.text();
 
-      console.log("Mesaj WhatsApp trimis");
+console.log("CallMeBot status:", callmebotRes.status);
+console.log("CallMeBot response:", callmebotText);
     }
 
     res.json({ received: true });
