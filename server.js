@@ -23,15 +23,14 @@ const PLANS = {
   "30": { name: "eSIM Europa 30 zile", amount: 5999, days: 30 }
 };
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
-
 app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
   console.log("Stripe webhook primit");
   res.json({ received: true });
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/health", (req, res) => res.status(200).send("OK"));
 
