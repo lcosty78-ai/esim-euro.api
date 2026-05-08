@@ -16,10 +16,12 @@ if (!STRIPE_SECRET_KEY) {
 
 const stripe = Stripe(STRIPE_SECRET_KEY);
 
+let orderNumber = 1;
+
 const PLANS = {
-  "3": { name: "eSIM Europa 3 zile", amount: 1099, days: 3 },
-  "10": { name: "eSIM Europa 10 zile", amount: 3499, days: 10 },
-  "20": { name: "eSIM Europa 20 zile", amount: 4999, days: 20 },
+  "plan": { name: "eSIM Europa PLAN", amount: 0, days: 0 },
+  "3": { name: "eSIM Europa 3 zile", amount: 1099, days: 10 },
+  "400GB": { name: "eSIM Europa 400 GB", amount: 5499, days: 30 },
   "30": { name: "eSIM Europa 30 zile", amount: 5999, days: 30 }
 };
 
@@ -41,14 +43,15 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
 
       const orderId = session.id.slice(-6); // ID scurt
       const date = new Date().toLocaleString("ro-RO");
-
+      const currentOrderNumber = orderNumber++;
+      
 console.log("PLATA FINALIZATA:", email, plan, days);
 
       // 🔥 TRIMITERE WHATSAPP
       const phone = process.env.CALLMEBOT_PHONE;
       const apiKey = process.env.CALLMEBOT_API_KEY;
 
-      const message = `🔥 Comandă nouă nr.${orderId}
+      const message = `🔥 Comandă nouă nr.${currentOrderNumber}
 
 👤 Nume: ${name || "-"}
 📧 Email: ${email}
@@ -99,8 +102,8 @@ app.post("/create-checkout-session", async (req, res) => {
       mode: "payment",
       customer_email: customerEmail,
       metadata: {
-        name: req.body.name,
-        phone: req.body.phone,
+        name: req.body.name || " ",
+        phone: req.body.phone || "-",
         plan: planKey,
         days: plan.days
 },
