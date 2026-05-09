@@ -106,6 +106,7 @@ app.post("/create-checkout-session", async (req, res) => {
         phone: req.body.phone || "-",
         plan: planKey,
         days: plan.days
+        customer_email: customerEmail
 },
       customer_creation: "always",
       payment_method_types: ["card"],
@@ -123,11 +124,7 @@ app.post("/create-checkout-session", async (req, res) => {
       payment_intent_data: {
         receipt_email: customerEmail
       },
-      metadata: {
-        plan: planKey,
-        days: String(plan.days),
-        customer_email: customerEmail
-      },
+     
       success_url: `${SITE_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/cancel.html`
     });
