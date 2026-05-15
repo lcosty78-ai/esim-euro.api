@@ -102,11 +102,11 @@ app.post("/create-checkout-session", async (req, res) => {
       mode: "payment",
       customer_email: customerEmail,
       metadata: {
-        name: req.body.name || " ",
-        phone: req.body.phone || "-",
-        plan: planKey,
-        days: plan.days
-        customer_email: customerEmail
+  name: String(req.body.name || "").trim(),
+  phone: String(req.body.phone || "").trim(),
+  plan: planKey,
+  days: String(plan.days),
+  customer_email: customerEmail
 },
       customer_creation: "always",
       payment_method_types: ["card"],
