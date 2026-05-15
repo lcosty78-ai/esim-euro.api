@@ -1,0 +1,26 @@
+[
+  {
+    "id": "rv1",
+    "name": "Andrei M.",
+    "email": "client1@email.com",
+    "stars": 5,
+    "text": "Super rapid! Am primit eSIM-ul în câteva minute și internetul a mers perfect în Italia.",
+    "date": "2026-01-10T12:00:00.000Z"
+  },
+  {
+    "id": "rv2",
+    "name": "Maria P.",
+    "email": "client2@email.com",
+    "stars": 5,
+    "text": "Foarte simplu de activat. QR-ul a venit instant pe email și conexiunea a fost excelentă.",
+    "date": "2026-01-11T15:30:00.000Z"
+  },
+  {
+    "id": "rv3",
+    "name": "Cristian D.",
+    "email": "client3@email.com",
+    "stars": 4,
+    "text": "Am folosit eSIM-ul în Spania și Franța fără probleme. Recomand!",
+    "date": "2026-01-12T09:20:00.000Z"
+  }
+]
