@@ -20,7 +20,7 @@ let orderNumber = 1;
 
 const PLANS = {
   "plan": { name: "eSIM Europa PLAN", amount: 0, days: 0 },
-  "3": { name: "eSIM Europa 3 zile", amount: 1099, days: 10 },
+  "3": { name: "eSIM Europa 3 zile", amount: 1099, days: 3 },
   "400GB": { name: "eSIM Europa 400 GB", amount: 5499, days: 30 },
   "30": { name: "eSIM Europa 30 zile", amount: 5999, days: 30 }
 };
