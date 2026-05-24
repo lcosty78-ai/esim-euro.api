@@ -223,5 +223,18 @@ app.post("/reviews", (req, res) => {
   }
 });
 
+app.get("/mega-plans", async (req, res) => {
+
+  const response = await fetch("https://megaesim.us/api/v1/plans", {
+    headers: {
+      Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78"
+    }
+  });
+
+  const data = await response.json();
+
+  res.json(data);
+
+});
 
 app.listen(PORT, "0.0.0.0", () => console.log(`eSIM Euro server pornit pe portul ${PORT}`));
