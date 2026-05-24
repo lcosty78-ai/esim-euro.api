@@ -137,17 +137,22 @@ app.post("/create-checkout-session", async (req, res) => {
 });
 
 app.get("/mega-plans", async (req, res) => {
+  try {
+    const response = await fetch("https://megaesim.us/api/v1/plans", {
+      headers: {
+        Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78"
+      }
+    });
 
-  const response = await fetch("https://megaesim.us/api/v1/plans", {
-    headers: {
-      Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78"
-    }
-  });
+    const text = await response.text();
+    res.status(response.status).send(text);
 
-  const data = await response.json();
-
-  res.json(data);
-
+  } catch (err) {
+    res.status(500).json({
+      error: "Mega plans failed",
+      message: err.message
+    });
+  }
 });
 
 app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
