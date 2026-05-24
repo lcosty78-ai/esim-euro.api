@@ -66,7 +66,7 @@ const megaRes = await fetch("https://api.megaesim.us/api/v1/orders", {
   body: JSON.stringify({
     planId: megaPlanId,
     deliveryEmail: email,
-    idempotencyKey: stripe-${session.id}
+    idempotencyKey: `stripe-${session.id} 
   })
 });
 
