@@ -25,6 +25,12 @@ const PLANS = {
   "30": { name: "eSIM Europa 30 zile", amount: 5999, days: 30 }
 };
 
+const MEGA_PLAN_IDS = {
+  "3": 17,
+  "400GB": 11,
+  "30": 1
+}; 
+
 app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
   try {
     const event = JSON.parse(req.body.toString());
@@ -47,6 +53,27 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
       
 console.log("PLATA FINALIZATA:", email, plan, days);
 
+const megaPlanId = MEGA_PLAN_IDS[plan];
+
+const megaRes = await fetch("https://api.megaesim.us/api/v1/orders", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78",
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "User-Agent": "eSimEuro-Backend/1.0"
+  },
+  body: JSON.stringify({
+    planId: megaPlanId,
+    deliveryEmail: email,
+    idempotencyKey: stripe-${session.id}
+  })
+});
+
+const megaData = await megaRes.json();
+
+console.log("MegaEsim response:", megaData);
+      
       // 🔥 TRIMITERE WHATSAPP
       const phone = process.env.CALLMEBOT_PHONE;
       const apiKey = process.env.CALLMEBOT_API_KEY;
