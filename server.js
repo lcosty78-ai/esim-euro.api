@@ -141,6 +141,8 @@ app.get("/mega-plans", async (req, res) => {
     const response = await fetch("https://megaesim.us/api/v1/plans", {
       headers: {
         Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78"
+        Accept: "application/json" ,
+        "User-Agent": "eSimEuro-Backend/1.0"
       }
     });
 
