@@ -22,7 +22,7 @@ const PLANS = {
   "plan": { name: "eSIM Euro PLAN", amount: 0, days: 0 },
   "3": { name: "eSIM Euro 3 zile", amount: 1099, days: 3 },
   "400GB": { name: "eSIM Euro 400 GB", amount: 5999, days: 30 },
-  "150GB": { name: "eSIM Euro 150 GB", amont:  4999, days: 30 },
+  "150GB": { name: "eSIM Euro 150 GB", amount:  4999, days: 30 },
   "30": { name: "eSIM Euro 30 zile", amount: 5999, days: 30 }
 };
 
@@ -162,11 +162,11 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-app.get("/mega-plans", async (req, res) => {
+app.get("/reseller-plans", async (req, res) => {
   try {
-    const response = await fetch("https://api.megaesim.us/api/v1/plans", {
+    const response = await fetch("https://reseller.esimnelimitat.com/api/v1/plans", {
       headers: {
-        Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78",
+        "x-api-key": process.env.RESELLER_API_KEY,
         Accept: "application/json",
         "User-Agent": "eSimEuro-Backend/1.0"
       }
