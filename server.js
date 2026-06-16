@@ -19,16 +19,18 @@ const stripe = Stripe(STRIPE_SECRET_KEY);
 let orderNumber = 1;
 
 const PLANS = {
-  "plan": { name: "eSIM Europa PLAN", amount: 0, days: 0 },
-  "3": { name: "eSIM Europa 3 zile", amount: 1099, days: 3 },
-  "400GB": { name: "eSIM Europa 400 GB", amount: 5499, days: 30 },
-  "30": { name: "eSIM Europa 30 zile", amount: 5999, days: 30 }
+  "plan": { name: "eSIM Euro PLAN", amount: 0, days: 0 },
+  "3": { name: "eSIM Euro 3 zile", amount: 1099, days: 3 },
+  "400GB": { name: "eSIM Euro 400 GB", amount: 5999, days: 30 },
+  "150GB": { name: "eSIM Euro 150 GB", amont:  4999, days: 30 },
+  "30": { name: "eSIM Euro 30 zile", amount: 5999, days: 30 }
 };
 
-const MEGA_PLAN_IDS = {
-  "3": 17,
-  "400GB": 11,
-  "30": 1
+const RESELLER_PLAN_IDS = {
+  "3": "3nelimitat",
+  "400GB":  "VODAFONE_400GB",
+  "150GB": "VODAFONE_150GB", 
+  "30": "30nelimitat" 
 }; 
 
 app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
@@ -53,26 +55,23 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
       
 console.log("PLATA FINALIZATA:", email, plan, days);
 
-const megaPlanId = MEGA_PLAN_IDS[plan];
+const resellerPlanId = RESELLER_PLAN_IDS[plan];
 
-const megaRes = await fetch("https://api.megaesim.us/api/v1/orders", {
+const resellerRes = await fetch("https://reseller.esimnelimitat.com/api/v1/orders", {
   method: "POST",
   headers: {
-    Authorization: "Bearer mega_live_63d1fa7f5cce49d505bc618f61b6f3bafc2cd1795fa8626b07211c1a094cbc78",
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "User-Agent": "eSimEuro-Backend/1.0"
+    "x-api-key": process.env.RESELLER_API_KEY,
+    "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    planId: megaPlanId,
-    deliveryEmail: email,
-    idempotencyKey: `stripe-${session.id}` 
+    planId: resellerPlanId,
+    quantity: 1
   })
 });
 
-const megaData = await megaRes.json();
+const resellerData = await resellerRes.json();
 
-console.log("MegaEsim response:", megaData);
+console.log("Reseller response:", resellerData); 
       
       // 🔥 TRIMITERE WHATSAPP
       const phone = process.env.CALLMEBOT_PHONE;
