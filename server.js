@@ -3,7 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const path = require("path");
 const nodemailer = require("nodemailer");
-const QRCode = require("qrcode")
+const QRCode = require("qrcode");
 const Stripe = require("stripe");
 
 const app = express();
@@ -96,10 +96,10 @@ const iosLink =
   encodeURIComponent(esim.qr);
 
 await mailer.sendMail({
-  from: "eSIM Euro" <${process.env.EMAIL_USER}>,
+  from: `"eSIM Euro" <${process.env.EMAIL_USER}>`,
   to: email,
   subject: "eSIM-ul tău este gata ✅",
-  html: 
+  html: ` 
     <h2>eSIM-ul tău este gata ✅</h2>
     <p>Mulțumim pentru comandă!</p>
 
@@ -112,12 +112,12 @@ await mailer.sendMail({
     <p><b>Cod manual LPA:</b></p>
     <p>${esim.qr}</p>
 
-    ${esim.pin ? <p><b>PIN:</b> ${esim.pin}</p> : ""}
-    ${esim.apn ? <p><b>APN:</b> ${esim.apn}</p> : ""}
+    ${esim.pin ? `<p><b>PIN:</b> ${esim.pin}</p>` : ""}
+    ${esim.apn ? `<p><b>APN:</b> ${esim.apn}</p>` : ""}
 
     <p><a href="${iosLink}">Instalare directă pe iPhone</a></p>
 
-    <p>Dacă ai probleme, răspunde la acest email.</p>
+    <p>Dacă ai probleme, răspunde la acest email.</p>`
   
 });
 
