@@ -2,6 +2,8 @@ const cors = require("cors");
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
+const nodemailer = require("nodemailer");
+const QRCode = require("qrcode")
 const Stripe = require("stripe");
 
 const app = express();
@@ -15,6 +17,15 @@ if (!STRIPE_SECRET_KEY) {
 }
 
 const stripe = Stripe(STRIPE_SECRET_KEY);
+
+const mailer =
+nodemailer.createTransport({
+  service: "gmail",
+  auth:{
+    user: process.env.EMAIL_USER_ESIMEURO,
+    pass: process.env.EMAIL_PASS_ESIMEURO
+  }
+});
 
 let orderNumber = 1;
 
@@ -72,6 +83,45 @@ const resellerRes = await fetch("https://reseller.esimnelimitat.com/api/v1/order
 const resellerData = await resellerRes.json();
 
 console.log("Reseller response:", resellerData); 
+
+if (!resellerData.success) {
+  throw new Error("Reseller order failed: " + JSON.stringify(resellerData));
+}
+
+const esim = resellerData.data.esims[0];
+const qrImage = await QRCode.toDataURL(esim.qr);
+
+const iosLink =
+  "https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=" +
+  encodeURIComponent(esim.qr);
+
+await mailer.sendMail({
+  from: "eSIM Euro" <${process.env.EMAIL_USER}>,
+  to: email,
+  subject: "eSIM-ul tău este gata ✅",
+  html: 
+    <h2>eSIM-ul tău este gata ✅</h2>
+    <p>Mulțumim pentru comandă!</p>
+
+    <p><b>Plan:</b> ${plan}</p>
+    <p><b>ICCID:</b> ${esim.iccid || "-"}</p>
+
+    <h3>Scanează acest QR:</h3>
+    <img src="${qrImage}" style="width:220px;height:220px;" />
+
+    <p><b>Cod manual LPA:</b></p>
+    <p>${esim.qr}</p>
+
+    ${esim.pin ? <p><b>PIN:</b> ${esim.pin}</p> : ""}
+    ${esim.apn ? <p><b>APN:</b> ${esim.apn}</p> : ""}
+
+    <p><a href="${iosLink}">Instalare directă pe iPhone</a></p>
+
+    <p>Dacă ai probleme, răspunde la acest email.</p>
+  
+});
+
+console.log("Email trimis către client:", email);
       
       // 🔥 TRIMITERE WHATSAPP
       const phone = process.env.CALLMEBOT_PHONE;
