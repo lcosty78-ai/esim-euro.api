@@ -96,7 +96,7 @@ const iosLink =
   encodeURIComponent(esim.qr);
 
 await mailer.sendMail({
-  from: `"eSIM Euro" <${process.env.EMAIL_USER}>`,
+  from: `"eSIM Euro" <${process.env.EMAIL_USER_ESIMEURO}>`,
   to: email,
   subject: "eSIM-ul tău este gata ✅",
   html: ` 
